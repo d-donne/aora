@@ -1,6 +1,7 @@
 import { SplashScreen, Stack } from "expo-router";
 import {useFonts} from 'expo-font'
 import { useEffect } from "react";
+import GlobalProvider from "@/context/GlobalProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,8 +27,13 @@ export default function RootLayout() {
   }, [fontsLoaded])
   
   return (
+    <GlobalProvider>
     <Stack screenOptions={{headerShown: false}}>
-      
-    </Stack>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="search/[query]" />
+      </Stack>
+    </GlobalProvider>
   );
 }

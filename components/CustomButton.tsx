@@ -4,7 +4,7 @@ import React, { ReactEventHandler } from "react";
 interface ButtonProps {
   title: string;
   handlePress: any;
-  containerStyles: string;
+  containerStyles?: string;
   textStyles?: string;
   isLoading?: boolean;
 }

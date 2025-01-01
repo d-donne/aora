@@ -1,6 +1,6 @@
 import { Image, ScrollView, Text, View } from "react-native";
 import '@/global.css'
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from 'expo-status-bar'
 
@@ -11,7 +11,7 @@ export default function Index() {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
-        <View className="items-center justify-center px-4 w-full min-h-[85vh]">
+        <View className="items-center justify-center px-5 w-full min-h-[85vh]">
           <Image source={images.logo} resizeMode="contain" className="w-[8.125rem] h-[5.25rem]  " />
           <Image source={images.cards} resizeMode="contain" className="max-w-[23.75rem] w-full h-[18.75rem] " />
 
