@@ -7,10 +7,17 @@ interface GlobalContextType {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
   user: Models.Document | null;
-  setUser: React.Dispatch<React.SetStateAction<Models.Document | null>>;
+  setUser: React.Dispatch<React.SetStateAction<Models.Document | null >>;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
+export const useGlobalContext = () => {
+  const context = useContext(GlobalContext)
+  if (!context) {
+    throw new Error("useGlobalContext must be used within a GlobalProvider")
+  }
+  return context
+}
 
 const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

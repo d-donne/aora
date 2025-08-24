@@ -1,4 +1,4 @@
-import { Client, Account, ID, Databases, Avatars, Query } from "react-native-appwrite";
+import { Client, Account, ID, Databases, Avatars, Query, Role } from "react-native-appwrite";
 
 const config = {
   endpoint: "https://cloud.appwrite.io/v1",
@@ -22,7 +22,7 @@ export const createUser = async (email: string, password: string, username: stri
     if (!newAccount) throw new Error();
 
     const avatarUrl = avatars.getInitials(username);
-    
+
     await signIn(email, password);
 
     const newUser = await databases.createDocument(config.databaseId, config.userCollectionId, ID.unique(), {
@@ -33,7 +33,6 @@ export const createUser = async (email: string, password: string, username: stri
     });
 
     return newUser;
-
   } catch (error) {
     throw new Error(error as string);
   }
@@ -41,7 +40,7 @@ export const createUser = async (email: string, password: string, username: stri
 
 export const signIn = async (email: string, password: string) => {
   try {
-    const session = account.createEmailPasswordSession(email, password);
+    const session = await account.createEmailPasswordSession(email, password);
     return session;
   } catch (error) {
     throw new Error(error as string);
@@ -50,15 +49,24 @@ export const signIn = async (email: string, password: string) => {
 
 export const getCurrentUser = async () => {
   try {
-    const currentAccount = await account.get()
+    const currentAccount = await account.get();
 
     if (!currentAccount) throw new Error();
-    
-    const currentUser = await databases.listDocuments(config.databaseId, config.userCollectionId, [Query.equal("accountId", currentAccount.$id)])
+
+    const currentUser = await databases.listDocuments(config.databaseId, config.userCollectionId, [Query.equal("accountId", currentAccount.$id)]);
     if (!currentUser) throw new Error();
 
-    return currentUser.documents[0]
+    return currentUser.documents[0];
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
+
+export const getAllPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId);
+    return posts.documents;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};

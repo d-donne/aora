@@ -6,7 +6,8 @@ import { images } from "@/constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
-import { signIn } from "@/lib/appwrite";
+import { getCurrentUser, signIn } from "@/lib/appwrite";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -14,6 +15,7 @@ const SignIn = () => {
     password: "",
   });
 
+  const { setUser, setIsLoggedIn } = useGlobalContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
     const submit = async () => {
@@ -26,9 +28,12 @@ const SignIn = () => {
       setIsSubmitting(true);
 
       try {
-        const result = await signIn(email, password);
+        const result = await getCurrentUser()
+        if (!result) throw new Error("User not found");
+        setUser(result);
+        setIsLoggedIn(true);
 
-        // TODO : set to global state using context
+        Alert.alert("Success", "Logged in successfully");
 
         router.replace("/home");
       } catch (error: any) {
@@ -66,7 +71,7 @@ const SignIn = () => {
           <CustomButton title="Sign In" handlePress={submit} isLoading={isSubmitting} containerStyles="mt-10" />
 
           <View className="flex-row gap-2 justify-center mt-7 items-center">
-            <Text className="text-gray-100 text-lg font-pregular">Don't have an account? </Text>
+            <Text className="text-gray-100 text-lg font-pregular">Don't have an accounst? </Text>
             <Link href='/sign-up' replace className="text-secondary text-lg font-psemibold">Sign Up</Link>
           </View>
         </View>
