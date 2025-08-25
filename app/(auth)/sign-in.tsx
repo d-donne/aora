@@ -18,31 +18,30 @@ const SignIn = () => {
   const { setUser, setIsLoggedIn } = useGlobalContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const submit = async () => {
-      const { email, password } = form;
+  const submit = async () => {
+    const { email, password } = form;
 
-      if ( !email || !password) {
-        Alert.alert("Error", "Please fill in all the fields");
-      }
+    if (!email || !password) {
+      Alert.alert("Error", "Please fill in all the fields");
+    }
 
-      setIsSubmitting(true);
+    setIsSubmitting(true);
 
-      try {
-        const result = await getCurrentUser()
-        if (!result) throw new Error("User not found");
-        setUser(result);
-        setIsLoggedIn(true);
+    try {
+      const result = await getCurrentUser();
+      if (!result) throw new Error("User not found");
+      setUser(result);
+      setIsLoggedIn(true);
 
-        Alert.alert("Success", "Logged in successfully");
+      Alert.alert("Success", "Logged in successfully");
 
-        router.replace("/home");
-      } catch (error: any) {
-        Alert.alert("Error", error.message);
-      } finally {
-        setIsSubmitting(false);
-      }
+      router.replace("/home");
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-  
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -72,7 +71,9 @@ const SignIn = () => {
 
           <View className="flex-row gap-2 justify-center mt-7 items-center">
             <Text className="text-gray-100 text-lg font-pregular">Don't have an accounst? </Text>
-            <Link href='/sign-up' replace className="text-secondary text-lg font-psemibold">Sign Up</Link>
+            <Link href="/sign-up" replace className="text-secondary text-lg font-psemibold">
+              Sign Up
+            </Link>
           </View>
         </View>
       </ScrollView>
