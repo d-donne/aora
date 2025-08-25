@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Alert } from "react-native";
 
-const useAppWrite = (fn: Function) => {
-   const [data, setData] = useState<any>([]);
-   const [isLoading, setIsLoading] = useState(true);
- 
+const useAppWrite = <T>(fn: () => Promise<T[]>) => {
+  const [data, setData] = useState<T[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response: any = await fn();
-      if (!response) throw new Error();
+      const response = await fn();
       setData(response);
-    } catch (error: any) {
-      Alert.alert("Error", error.message);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      Alert.alert("Error", errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -24,12 +24,7 @@ const useAppWrite = (fn: Function) => {
 
   const refetch = () => fetchData();
 
-   return {data, isLoading, refetch}
-}
+  return { data, isLoading, refetch };
+};
 
-
-
-
-
-export default useAppWrite
-
+export default useAppWrite;
