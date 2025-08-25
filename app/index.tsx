@@ -10,10 +10,8 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 
 export default function Index() {
   const { isLoading, isLoggedIn } = useGlobalContext()
-  const gOn = true
   
   if (!isLoading && isLoggedIn) return <Redirect href='/home' />
-  //  if (gOn) return <Redirect href='/home'/>
 
   return (
     <SafeAreaView className="bg-primary h-full">
