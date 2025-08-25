@@ -1,3 +1,4 @@
+import { Users, Videos } from "@/types/appwrite/appwrite";
 import { Client, Account, ID, Databases, Avatars, Query, Role } from "react-native-appwrite";
 
 const config = {
@@ -32,7 +33,7 @@ export const createUser = async (email: string, password: string, username: stri
       avatar: avatarUrl,
     });
 
-    return newUser;
+    return newUser as Users;
   } catch (error) {
     throw new Error(error as string);
   }
@@ -67,6 +68,15 @@ export const getAllPosts = async () => {
     const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId);
     return posts.documents;
   } catch (error) {
+    throw new Error(error as string);
+  }
+};
+
+export const getLatestPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [Query.orderDesc("$createdAt"), Query.limit(7)]);
+    return posts.documents;
+  } catch (error: any) {
     throw new Error(error as string);
   }
 };
